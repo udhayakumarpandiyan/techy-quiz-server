@@ -22,7 +22,7 @@ async function create(answerParam) {
 
 async function update(id, answerParam) {
     const answer = await Answer.findById(id);
-    if (!answer) throw 'Answer not found';
+    if (!answer) throw 'Quiz answer not found';
     Object.assign(answer, answerParam);
     await answer.save();
 }
