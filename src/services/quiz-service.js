@@ -1,9 +1,11 @@
+const { default: mongoose } = require('mongoose');
 const db = require('../_helpers/db');
 const Quiz = db.Quiz;
+const Answer = db.Answer;
 
 module.exports = {
     getAll,
-    getQuizById,
+    getQuiz,
     create,
     update,
     delete: _delete
@@ -14,13 +16,27 @@ async function getAll() {
     return await Quiz.find();
 }
 
-async function getQuizById(id) {
-    return await Quiz.findById(id);
+async function getQuiz(previouslyFetchedIds) {
+    const record = await Quiz.findOne({
+        id: { $nin: previouslyFetchedIds }
+    });
+    return record || {};
+
 }
 async function create(quizParam) {
-    // validate
     const quiz = new Quiz(quizParam);
-    // save user
+    if (quizParam?.questions) {
+        const answers = [];
+        quizParam.questions.forEach((question) => {
+            question.options.forEach((option) => {
+                if (option.isAnswer === true) {
+                    answers.push({ id: option.id, order: option.order });
+                }
+            })
+        })
+        const answer = new Answer({ quizId: quizParam.id, answers });
+        await answer.save();
+    }
     await quiz.save();
 }
 

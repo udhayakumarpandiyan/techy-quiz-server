@@ -1,5 +1,11 @@
 const mongoose = require("mongoose");
 
+const quizSchema = new mongoose.Schema({
+  id: { type: String, required: false },
+  answers: { type: Array, required: false }
+});
+
+
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: false },
   hash: { type: String, required: true },
@@ -20,27 +26,48 @@ const userSchema = new mongoose.Schema({
   lastQuizScore: { type: Number, default: 0 },
   lastActiveDate: { type: Date, default: new Date(), required: false },
   totalQuizzesCompleted: {
-    single: {
+    self: {
+      attemptedQuizes: { type: [quizSchema], required: false },
       totalContested: { type: Number, default: 0 },
       score: { type: Number, default: 0 },
     },
-    directContest: {
+    random: {
+      attemptedQuizes: { type: [quizSchema], required: false },
       totalContested: { type: Number, default: 0 },
       score: { type: Number, default: 0 },
     },
-    tournament: {
+    fixed: {
+      attemptedQuizes: { type: [quizSchema], required: false },
       totalContested: { type: Number, default: 0 },
       score: { type: Number, default: 0 },
     },
-    teamTourament: {
+    openGroup: {
+      attemptedQuizes: { type: [quizSchema], required: false },
       totalContested: { type: Number, default: 0 },
       score: { type: Number, default: 0 },
     },
-    teamContest: {
+    myTeam: {
+      attemptedQuizes: { type: [quizSchema], required: false },
+      totalContested: { type: Number, default: 0 },
+      score: { type: Number, default: 0 },
+    },
+    randomTeam: {
+      attemptedQuizes: { type: [quizSchema], required: false },
+      totalContested: { type: Number, default: 0 },
+      score: { type: Number, default: 0 },
+    },
+    fixedTeam: {
+      attemptedQuizes: { type: [quizSchema], required: false },
+      totalContested: { type: Number, default: 0 },
+      score: { type: Number, default: 0 },
+    },
+    openTeamsGroup: {
+      attemptedQuizes: { type: [quizSchema], required: false },
       totalContested: { type: Number, default: 0 },
       score: { type: Number, default: 0 },
     }
-  }
+  },
+  roles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Role' }]
 });
 userSchema.set('toJSON', {
   virtuals: true,

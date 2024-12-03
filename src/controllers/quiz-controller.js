@@ -5,7 +5,7 @@ const quizService = require('../services/quiz-service');
 // routes
 router.post('/add', add);
 router.get('/', getAll);
-router.get('/:id', getQuizById);
+router.post('/get-quiz', getQuiz);
 router.put('/:id', update);
 router.delete('/:id', _delete);
 
@@ -24,8 +24,8 @@ function getAll(req, res, next) {
         .catch(err => next(err));
 }
 
-function getQuizById(req, res, next) {
-    quizService.getQuizById(req.params.id)
+function getQuiz(req, res, next) {
+    quizService.getQuiz(req.body)
         .then(quiz => quiz ? res.json(quiz) : res.sendStatus(404))
         .catch(err => next(err));
 }

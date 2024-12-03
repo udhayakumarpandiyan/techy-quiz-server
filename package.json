@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node ./server.js",
     "start-dev": "nodemon ./server.js",
+    "build": "netlify deploy --prod",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "udhayakumar pandiyan",
@@ -18,7 +19,12 @@
     "express": "^4.21.1",
     "express-jwt": "^8.4.1",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.7.2"
+    "mongoose": "^8.7.2",
+    "netlify-cli": "^17.38.0",
+    "netlify-lambda": "^2.0.16",
+    "nodemailer": "^6.9.16",
+    "otp-generator": "^4.0.1",
+    "serverless-http": "^3.2.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.3"
