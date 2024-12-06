@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const serverless = require("serverless-http");
 require("dotenv").config();
 const userRoute = require("./src/controllers/user-controller");
 const quizRoute = require("./src/controllers/quiz-controller");
@@ -13,7 +12,6 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
-app.use("/.netlify/functions/app", router);
 app.use("/api/user", userRoute);
 app.use("/api/quiz", quizRoute);
 
@@ -22,4 +20,4 @@ app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
 
-module.exports.handler = serverless(app);
+module.exports = app;
