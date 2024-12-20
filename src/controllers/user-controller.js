@@ -11,6 +11,8 @@ router.get('/current', getCurrent);
 router.get('/:id', getById);
 router.put('/:id', update);
 router.delete('/:id', _delete);
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
 
 module.exports = router;
 
@@ -57,6 +59,16 @@ function update(req, res, next) {
 
 function _delete(req, res, next) {
     userService.delete(req.params.id)
+        .then(() => res.json({}))
+        .catch(err => next(err));
+}
+function forgotPassword(req, res, next) {
+    userService.forgotPassword(req, res)
+        .then(() => res.json({}))
+        .catch(err => next(err));
+}
+function resetPassword(req, res, next) {
+    userService.resetPassword(req, res)
         .then(() => res.json({}))
         .catch(err => next(err));
 }

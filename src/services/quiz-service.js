@@ -1,5 +1,6 @@
 const { default: mongoose } = require('mongoose');
 const db = require('../_helpers/db');
+const encryptData  = require('../_helpers/encrypt');
 const Quiz = db.Quiz;
 const Answer = db.Answer;
 
@@ -20,6 +21,12 @@ async function getQuiz(previouslyFetchedIds) {
     const record = await Quiz.findOne({
         id: { $nin: previouslyFetchedIds }
     });
+    // if (record) {
+    //     const questions = record?.questions.map((question) => {
+    //         //return encryptData(question);
+    //     })
+    //     return questions;
+    // }
     return record || {};
 
 }
