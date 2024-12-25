@@ -22,8 +22,8 @@ function login(req, res, next) {
         .catch(err => next(err));
 }
 function logout(req, res, next) {
-    userService.logout(req.body)
-        .then(user => user ? res.json(user) : res.status(400).json({ message: 'Failed' }))
+    userService.logout()
+        .then(() => res.json({}))
         .catch(err => next(err));
 }
 

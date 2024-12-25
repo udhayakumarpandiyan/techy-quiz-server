@@ -9,8 +9,8 @@ module.exports = {
 };
 
 async function getAnswerByQuizId(quizId) {
-    const record = await Answer.findOne({ id: quizId });
-    return record || {};
+    const record = await Answer.findOne({ quizId: quizId });
+    return record?.answers || {};
 
 }
 async function create(answerParam) {

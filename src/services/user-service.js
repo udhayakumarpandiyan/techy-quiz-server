@@ -35,15 +35,19 @@ async function login({ email, password }) {
 }
 async function logout(req, res) {
     try {
-        res?.clearCookie('token'); // If the token is in a cookie
-        res?.status(200).json({ message: 'Logout successful' });
+        res.clearCookie('token', {
+            httpOnly: true,  // Ensures the cookie is not accessible via JavaScript
+            secure: process.env.NODE_ENV === 'production',  // Set to true in production to only allow HTTPS requests
+            sameSite: 'strict', // Prevents the cookie from being sent with cross-origin requests
+            path: '/' // Ensures the correct path is used
+        });
+        return { message: 'Logout successful' };
     } catch (err) {
-        res?.status(500).json({
+        return {
             status: 'error',
             message: 'Internal Server Error',
-        });
+        };
     }
-    res?.end();
 }
 
 async function getAll() {

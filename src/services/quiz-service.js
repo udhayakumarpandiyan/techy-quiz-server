@@ -1,12 +1,14 @@
 const { default: mongoose } = require('mongoose');
 const db = require('../_helpers/db');
-const encryptData  = require('../_helpers/encrypt');
+const encryptData = require('../_helpers/encrypt');
+const { getAnswerByQuizId } = require('./answer-service');
 const Quiz = db.Quiz;
 const Answer = db.Answer;
 
 module.exports = {
     getAll,
     getQuiz,
+    submitQuiz,
     create,
     update,
     delete: _delete
@@ -28,6 +30,31 @@ async function getQuiz(previouslyFetchedIds) {
     //     return questions;
     // }
     return record || {};
+
+}
+async function submitQuiz(req, res) {
+    const { quizId, answers, totalTimeTakenInSeconds } = req.body;
+    let quizAnswers = await getAnswerByQuizId(quizId);
+    let correctAnswers = 0;
+    if (quizAnswers && answers) {
+        for (let i = 0; i < quizAnswers.length; i++) {
+            for (let j = 0; j < answers.length; j++) {
+                if (quizAnswers[i].id === answers[j].id) {
+                    correctAnswers++;
+                }
+            }
+        }
+        let bonus = (((10 * 60) - totalTimeTakenInSeconds) / 2 / 60).toFixed(2);
+        const result = {
+            actualScore: (correctAnswers * 10) + Number(bonus),
+            bonusPoints: bonus,
+            result: correctAnswers > 8 ? 1 : correctAnswers > 6 ? 2 : correctAnswers > 4 ? 3 : 4,
+            timeTaken: totalTimeTakenInSeconds,
+        }
+        return result;
+    }
+
+    return {};
 
 }
 async function create(quizParam) {
