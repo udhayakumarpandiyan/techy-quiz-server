@@ -29,7 +29,7 @@ function logout(req, res, next) {
 
 function register(req, res, next) {
     userService.create(req.body)
-        .then(() => res.json({}))
+        .then((response) => response ? res.json(response) : res.json({}))
         .catch(err => next(err));
 }
 
@@ -64,7 +64,7 @@ function _delete(req, res, next) {
 }
 function forgotPassword(req, res, next) {
     userService.forgotPassword(req, res)
-        .then(() => res.json({}))
+        .then((response) => response ? res.json(response) : res.json({}))
         .catch(err => next(err));
 }
 function resetPassword(req, res, next) {

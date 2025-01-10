@@ -1,8 +1,16 @@
 const mongoose = require("mongoose");
 
+const technologySchema = new mongoose.Schema({
+  id: { type: String, required: false },
+  name: { type: String, required: false },
+  type: { type: String, required: false },
+});
+
 const quizSchema = new mongoose.Schema({
   id: { type: String, required: false },
-  answers: { type: Array, required: false }
+  technology: { type: technologySchema, required: false },
+  answers: { type: Array, required: false },
+  type: {  type: String, required: false },
 });
 
 

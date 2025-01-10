@@ -58,17 +58,17 @@ async function getById(id) {
     return await User.findById(id);
 }
 async function create(userParam) {
-    // validate
-    if (await User.findOne({ username: userParam.email })) {
-        throw 'Email "' + userParam.email + '" is already taken';
+    const existingUser = await User.findOne({ email: userParam.email });
+    if (existingUser === null) {
+        const user = new User(userParam);
+        if (userParam.password) {
+            user.hash = bcrypt.hashSync(userParam.password, 10);
+        }
+        await user.save();
     }
-    const user = new User(userParam);
-    // hash password
-    if (userParam.password) {
-        user.hash = bcrypt.hashSync(userParam.password, 10);
+    else {
+        return { success: false, message: `${userParam.email} already exists , Please try with different email id .`}
     }
-    // save user
-    await user.save();
 }
 
 async function update(id, userParam) {
@@ -94,8 +94,9 @@ async function _delete(id) {
 async function forgotPassword(req, res) {
     const { email } = req.body;
     const user = await User.findOne({ email });
+    console.log("user: ", user, email);
     if (!user) {
-        return { success: false, message: 'Email not found' };
+        return { success: false, message: 'Email Id not found' };
     }
 
     let jwtSecretKey = process.env.JWT_SECRET_KEY;
