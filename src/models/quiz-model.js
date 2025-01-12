@@ -44,7 +44,7 @@ const questionSchema = new mongoose.Schema({
     type: String,
     enum: ['single', 'multiple', 'none'], // Allowed values
     required: true,
-    default: 0
+    default: 'single'
   },
   options: { type: [optionSchema], default: [], required: true },
   answers: { type: Array, default: [] },

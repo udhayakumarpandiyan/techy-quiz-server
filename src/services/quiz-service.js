@@ -8,6 +8,7 @@ const Answer = db.Answer;
 module.exports = {
     getAll,
     getQuiz,
+    getSampleQuiz,
     submitQuiz,
     create,
     update,
@@ -31,6 +32,21 @@ async function getQuiz(previouslyFetchedIds) {
     // }
     return record || {};
 
+}
+async function getSampleQuiz(param) {
+    if (!param.technology) {
+        return { error: 'technology parameter is required' };
+    }
+    const technology = Number(param.technology);
+
+    if (isNaN(technology)) {
+        return { error: 'technology must be valid number' };
+    }
+    const record = await Quiz.findOne({
+        technology: technology,
+        category: 0
+    });
+    return record || {};
 }
 async function submitQuiz(req, res) {
     const { quizId, answers, totalTimeTakenInSeconds } = req.body;
